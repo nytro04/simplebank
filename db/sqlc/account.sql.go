@@ -8,7 +8,7 @@ import (
 )
 
 const createAccount = `-- name: CreateAccount :one
-INSERT INTO "accounts" (
+INSERT INTO accounts (
   owner,
   balance,
   currency
@@ -37,7 +37,7 @@ func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (A
 }
 
 const deleteAccount = `-- name: DeleteAccount :exec
-DELETE FROM "accounts"
+DELETE FROM accounts
 WHERE id = $1
 `
 
@@ -47,7 +47,7 @@ func (q *Queries) DeleteAccount(ctx context.Context, id int64) error {
 }
 
 const getAccount = `-- name: GetAccount :one
-SELECT id, owner, balance, currency, created_at FROM "accounts"
+SELECT id, owner, balance, currency, created_at FROM accounts
 WHERE id = $1 LIMIT 1
 `
 
@@ -65,7 +65,7 @@ func (q *Queries) GetAccount(ctx context.Context, id int64) (Account, error) {
 }
 
 const listAccounts = `-- name: ListAccounts :many
-SELECT id, owner, balance, currency, created_at FROM "accounts"
+SELECT id, owner, balance, currency, created_at FROM accounts
 WHERE owner = $1
 ORDER BY id
 LIMIT $2
@@ -108,7 +108,7 @@ func (q *Queries) ListAccounts(ctx context.Context, arg ListAccountsParams) ([]A
 }
 
 const updateAccount = `-- name: UpdateAccount :one
-UPDATE "accounts"
+UPDATE accounts
 SET balance = $2
 WHERE id = $1
 RETURNING id, owner, balance, currency, created_at
